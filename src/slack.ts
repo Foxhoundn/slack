@@ -127,7 +127,7 @@ async function send(
 
     // Check if the matching json file for the step exists
     if (stepFile && status.outcome.toLowerCase() === 'failure') {
-      text += `\n-------${'`'}${step.toUpperCase()}${'`'} STEP RESULTS-------\n`
+      text += `\n\n\n-------*${step.toUpperCase()}$* STEP RESULTS-------\n`
       const parsedFile = JSON.parse(stepFile.toString())
 
       parsedFile.testResults.forEach((result: any) => {

@@ -6873,7 +6873,7 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
             catch (e) { }
             // Check if the matching json file for the step exists
             if (stepFile && status.outcome.toLowerCase() === 'failure') {
-                text += `\n-------${'`'}${step.toUpperCase()}${'`'} STEP RESULTS-------\n`;
+                text += `\n\n\n-------*${step.toUpperCase()}$* STEP RESULTS-------\n`;
                 const parsedFile = JSON.parse(stepFile.toString());
                 parsedFile.testResults.forEach((result) => {
                     result === null || result === void 0 ? void 0 : result.assertionResults.forEach((assertionResult) => {
