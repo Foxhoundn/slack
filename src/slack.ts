@@ -121,15 +121,15 @@ async function send(
   const fields = []
   if (checks.length) {
     fields.push({
-      title: 'Job Steps',
+      title: 'Job Steps:',
       value: checks.join('\n'),
       short: false
     })
   }
 
   const message = {
-    username: 'GitHub Action',
-    icon_url: 'https://octodex.github.com/images/original.png',
+    username: process.env.SLACK_USERNAME || 'GitHub Action',
+    icon_url: process.env.SLACK_ICON || 'https://octodex.github.com/images/original.png',
     channel,
     attachments: [
       {
