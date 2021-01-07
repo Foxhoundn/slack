@@ -6858,7 +6858,7 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
                 };
             }
         }
-        const text = `${`*<${workflowUrl}|Workflow _${workflow}_ ` +
+        let text = `${`*<${workflowUrl}|Workflow _${workflow}_ ` +
             `job _${jobName}_ triggered by _${eventName}_ is _${jobStatus}_>* ` +
             `for <${refUrl}|\`${ref}\`>\n`}${title ? `<${diffUrl}|\`${diffRef}\`> - ${title}` : ''}`;
         // add job steps, if provided
@@ -6872,8 +6872,17 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
             }
             catch (e) { }
             // Check if the matching json file for the step exists
-            if (stepFile) {
-                console.log(stepFile.toString());
+            if (stepFile && status.outcome.toLowerCase() === 'failure') {
+                text += `\n---${step} results---`;
+                const parsedFile = JSON.parse(stepFile.toString());
+                parsedFile.testResults.forEach((result) => {
+                    result === null || result === void 0 ? void 0 : result.assertionResults.forEach((assertionResult) => {
+                        text += `\n*${assertionResult.title}*`;
+                        assertionResult === null || assertionResult === void 0 ? void 0 : assertionResult.failureMessages.forEach((msg) => {
+                            text += `\n${msg}`;
+                        });
+                    });
+                });
             }
         }
         const fields = [];

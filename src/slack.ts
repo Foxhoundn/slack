@@ -108,7 +108,7 @@ async function send(
     }
   }
 
-  const text = `${
+  let text = `${
     `*<${workflowUrl}|Workflow _${workflow}_ ` +
     `job _${jobName}_ triggered by _${eventName}_ is _${jobStatus}_>* ` +
     `for <${refUrl}|\`${ref}\`>\n`
@@ -120,14 +120,27 @@ async function send(
     checks.push(`${stepIcon(status.outcome)} ${step}`)
     console.log(`${process.env.GITHUB_WORKSPACE}/${step}.json`)
     let stepFile
+
     try {
       stepFile = readFileSync(`${process.env.GITHUB_WORKSPACE}/${step}.json`)
     } catch (e) {}
+
     // Check if the matching json file for the step exists
-    if (stepFile) {
-      console.log(stepFile.toString())
+    if (stepFile && status.outcome.toLowerCase() === 'failure') {
+      text += `\n---${step} results---`
+      const parsedFile = JSON.parse(stepFile.toString())
+
+      parsedFile.testResults.forEach((result: any) => {
+        result?.assertionResults.forEach((assertionResult: any) => {
+          text += `\n*${assertionResult.title}*`
+          assertionResult?.failureMessages.forEach((msg: string) => {
+            text += `\n${msg}`
+          })
+        })
+      })
     }
   }
+
   const fields = []
   if (checks.length) {
     fields.push({
