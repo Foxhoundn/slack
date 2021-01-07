@@ -5,13 +5,13 @@
   "description": "Notify Slack of GitHub Actions job and step status.",
   "main": "lib/main.js",
   "scripts": {
-    "build": "tsc",
-    "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint --fix src/**/*.ts",
-    "pack": "ncc build",
-    "test": "jest",
+    "build": "./node_modules/.bin/tsc",
+    "format": "./node_modules/.bin/prettier --write **/*.ts",
+    "format-check": "./node_modules/.bin/prettier --check **/*.ts",
+    "lint": "./node_modules/.bin/eslint src/**/*.ts",
+    "lint:fix": "./node_modules/.bin/eslint --fix src/**/*.ts",
+    "pack": "./node_modules/.bin/ncc build",
+    "test": "./node_modules/.bin/jest",
     "all": "npm run build && npm run format && npm run lint && npm run pack && npm test"
   },
   "repository": {

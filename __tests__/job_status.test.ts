@@ -1,8 +1,8 @@
 import * as github from '@actions/github'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import send from '../src/slack'
 import {readFileSync} from 'fs'
+import send from '../src/slack'
 
 const url = 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
 const jobName = 'CI Tests'
@@ -103,7 +103,7 @@ test('push event to slack', async () => {
         fields: [
           {
             short: false,
-            title: 'Job Steps',
+            title: 'Job Steps:',
             value:
               ':no_entry_sign: install-deps\n:no_entry_sign: hooks\n:no_entry_sign: lint\n:no_entry_sign: types\n:no_entry_sign: unit-test\n:no_entry_sign: integration-test'
           }
