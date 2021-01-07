@@ -1422,6 +1422,7 @@ function run() {
             const jobName = process.env.GITHUB_JOB;
             const jobStatus = core.getInput('status', { required: true }).toUpperCase();
             const jobSteps = JSON.parse(core.getInput('steps', { required: false }) || '{}');
+            core.debug(core.getInput('steps', { required: false }) || '{}');
             const channel = core.getInput('channel', { required: false });
             if (url) {
                 yield slack_1.default(url, jobName, jobStatus, jobSteps, channel);
