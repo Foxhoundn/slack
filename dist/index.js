@@ -6864,6 +6864,7 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
         // add job steps, if provided
         const checks = [];
         for (const [step, status] of Object.entries(jobSteps)) {
+            console.log(step, status);
             checks.push(`${stepIcon(status.outcome)} ${step}`);
         }
         const fields = [];
