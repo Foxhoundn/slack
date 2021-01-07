@@ -11,10 +11,10 @@ function jobColor(status: string): string | undefined {
 }
 
 function stepIcon(status: string): string {
-  if (status.toLowerCase() === 'success') return ':heavy_check_mark:'
-  if (status.toLowerCase() === 'failure') return ':x:'
+  if (status.toLowerCase() === 'success') return ':white_check_mark:'
+  if (status.toLowerCase() === 'failure') return ':no_entry_sign:'
   if (status.toLowerCase() === 'cancelled') return ':exclamation:'
-  if (status.toLowerCase() === 'skipped') return ':no_entry_sign:'
+  if (status.toLowerCase() === 'skipped') return ':warning:'
   return `:grey_question: ${status}`
 }
 
@@ -127,14 +127,14 @@ async function send(
 
     // Check if the matching json file for the step exists
     if (stepFile && status.outcome.toLowerCase() === 'failure') {
-      text += `\n---${step} results---`
+      text += `\n-------${'`'}${step.toUpperCase()}${'`'} STEP RESULTS-------\n`
       const parsedFile = JSON.parse(stepFile.toString())
 
       parsedFile.testResults.forEach((result: any) => {
         result?.assertionResults.forEach((assertionResult: any) => {
           text += `\n*${assertionResult.title}*`
           assertionResult?.failureMessages.forEach((msg: string) => {
-            text += `\n${msg}`
+            text += `\n${'```'}${msg}${'```'}`
           })
         })
       })

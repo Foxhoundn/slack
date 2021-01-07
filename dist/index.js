@@ -6775,13 +6775,13 @@ function jobColor(status) {
 }
 function stepIcon(status) {
     if (status.toLowerCase() === 'success')
-        return ':heavy_check_mark:';
+        return ':white_check_mark:';
     if (status.toLowerCase() === 'failure')
-        return ':x:';
+        return ':no_entry_sign:';
     if (status.toLowerCase() === 'cancelled')
         return ':exclamation:';
     if (status.toLowerCase() === 'skipped')
-        return ':no_entry_sign:';
+        return ':warning:';
     return `:grey_question: ${status}`;
 }
 function send(url, jobName, jobStatus, jobSteps, channel) {
@@ -6873,13 +6873,13 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
             catch (e) { }
             // Check if the matching json file for the step exists
             if (stepFile && status.outcome.toLowerCase() === 'failure') {
-                text += `\n---${step} results---`;
+                text += `\n-------${'`'}${step.toUpperCase()}${'`'} STEP RESULTS-------\n`;
                 const parsedFile = JSON.parse(stepFile.toString());
                 parsedFile.testResults.forEach((result) => {
                     result === null || result === void 0 ? void 0 : result.assertionResults.forEach((assertionResult) => {
                         text += `\n*${assertionResult.title}*`;
                         assertionResult === null || assertionResult === void 0 ? void 0 : assertionResult.failureMessages.forEach((msg) => {
-                            text += `\n${msg}`;
+                            text += `\n${'```'}${msg}${'```'}`;
                         });
                     });
                 });
