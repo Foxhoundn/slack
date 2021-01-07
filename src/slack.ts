@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {EventPayloads} from '@octokit/webhooks'
 import {IncomingWebhook, IncomingWebhookResult} from '@slack/webhook'
+import {readFileSync} from 'fs'
 
 function jobColor(status: string): string | undefined {
   if (status.toLowerCase() === 'success') return 'good'
@@ -116,8 +117,13 @@ async function send(
   // add job steps, if provided
   const checks: string[] = []
   for (const [step, status] of Object.entries(jobSteps)) {
-    console.log(step, status)
     checks.push(`${stepIcon(status.outcome)} ${step}`)
+    console.log(`${process.env.GITHUB_WORKSPACE}/${step}.json`)
+    const stepFile = readFileSync(`${process.env.GITHUB_WORKSPACE}/${step}.json`)
+    // Check if the matching json file for the step exists
+    if (stepFile) {
+      console.log(stepFile.toString())
+    }
   }
   const fields = []
   if (checks.length) {

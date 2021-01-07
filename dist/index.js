@@ -1422,7 +1422,6 @@ function run() {
             const jobName = process.env.GITHUB_JOB;
             const jobStatus = core.getInput('status', { required: true }).toUpperCase();
             const jobSteps = JSON.parse(core.getInput('steps', { required: false }) || '{}');
-            core.debug(core.getInput('steps', { required: false }) || '{}');
             const channel = core.getInput('channel', { required: false });
             if (url) {
                 yield slack_1.default(url, jobName, jobStatus, jobSteps, channel);
@@ -6765,6 +6764,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
 const webhook_1 = __webpack_require__(736);
+const fs_1 = __webpack_require__(747);
 function jobColor(status) {
     if (status.toLowerCase() === 'success')
         return 'good';
@@ -6864,8 +6864,13 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
         // add job steps, if provided
         const checks = [];
         for (const [step, status] of Object.entries(jobSteps)) {
-            console.log(step, status);
             checks.push(`${stepIcon(status.outcome)} ${step}`);
+            console.log(`${process.env.GITHUB_WORKSPACE}/${step}.json`);
+            const stepFile = fs_1.readFileSync(`${process.env.GITHUB_WORKSPACE}/${step}.json`);
+            // Check if the matching json file for the step exists
+            if (stepFile) {
+                console.log(stepFile.toString());
+            }
         }
         const fields = [];
         if (checks.length) {
