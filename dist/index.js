@@ -6866,7 +6866,11 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
         for (const [step, status] of Object.entries(jobSteps)) {
             checks.push(`${stepIcon(status.outcome)} ${step}`);
             console.log(`${process.env.GITHUB_WORKSPACE}/${step}.json`);
-            const stepFile = fs_1.readFileSync(`${process.env.GITHUB_WORKSPACE}/${step}.json`);
+            let stepFile;
+            try {
+                stepFile = fs_1.readFileSync(`${process.env.GITHUB_WORKSPACE}/${step}.json`);
+            }
+            catch (e) { }
             // Check if the matching json file for the step exists
             if (stepFile) {
                 console.log(stepFile.toString());
