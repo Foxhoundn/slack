@@ -127,7 +127,7 @@ async function send(
 
     // Check if the matching json file for the step exists
     if (stepFile && status.outcome.toLowerCase() === 'failure') {
-      text += `\n\n\n-------*${step.toUpperCase()}$* STEP RESULTS-------\n`
+      text += `\n\n\n-------*${step.toUpperCase()}* STEP RESULTS-------\n`
       const parsedFile = JSON.parse(stepFile.toString())
 
       parsedFile.testResults.forEach((result: any) => {
@@ -162,7 +162,7 @@ async function send(
         author_link: sender?.html_url,
         author_icon: sender?.avatar_url,
         mrkdwn_in: ['text' as const],
-        text,
+        text: process.env.SLACK_MESSAGE || text,
         fields,
         footer: `<${repositoryUrl}|${repositoryName}> #${runNumber}`,
         footer_icon: 'https://github.githubassets.com/favicon.ico',

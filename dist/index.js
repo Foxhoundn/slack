@@ -6873,7 +6873,7 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
             catch (e) { }
             // Check if the matching json file for the step exists
             if (stepFile && status.outcome.toLowerCase() === 'failure') {
-                text += `\n\n\n-------*${step.toUpperCase()}$* STEP RESULTS-------\n`;
+                text += `\n\n\n-------*${step.toUpperCase()}* STEP RESULTS-------\n`;
                 const parsedFile = JSON.parse(stepFile.toString());
                 parsedFile.testResults.forEach((result) => {
                     result === null || result === void 0 ? void 0 : result.assertionResults.forEach((assertionResult) => {
@@ -6905,7 +6905,7 @@ function send(url, jobName, jobStatus, jobSteps, channel) {
                     author_link: sender === null || sender === void 0 ? void 0 : sender.html_url,
                     author_icon: sender === null || sender === void 0 ? void 0 : sender.avatar_url,
                     mrkdwn_in: ['text'],
-                    text,
+                    text: process.env.SLACK_MESSAGE || text,
                     fields,
                     footer: `<${repositoryUrl}|${repositoryName}> #${runNumber}`,
                     footer_icon: 'https://github.githubassets.com/favicon.ico',
